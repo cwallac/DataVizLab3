@@ -1,6 +1,6 @@
-window.addEventListener("load",run,false);
+window.addEventListener("load",runMap,false);
 
-var GLOBAL = {
+var GLOBAL_MAP = {
 	data:[],
 	activeData:[],
 	activeCountry:'USA'
@@ -43,7 +43,7 @@ function sentimentData() {
 }
 
 function determineFill(data) {
-	var score = data[GLOBAL.activeCountry];
+	var score = data[GLOBAL_MAP.activeCountry];
 	var red = 127 + Math.round(-parseFloat(score) * 63);
 	var green = 127 + Math.round(parseFloat(score) * 63);
 	return "rgb(" + red.toString() + "," + green.toString() + ",0)";
@@ -138,7 +138,7 @@ var countryToClass = {
 
 
 
-function run() {
+function runMap() {
 	var dataSetsLoaded = 0;
 	var dataToLoad = 5;
 	var map = new Datamap({
@@ -149,7 +149,7 @@ function run() {
 		});
 
 	d3.csv("/america1.csv", function(data) {
-        GLOBAL.data = GLOBAL.data.concat(data)
+        GLOBAL_MAP.data = GLOBAL_MAP.data.concat(data)
         dataSetsLoaded += 1;
         if (dataSetsLoaded == dataToLoad) {
         	setData();
@@ -157,7 +157,7 @@ function run() {
         });
 
 	d3.csv("/africa1.csv", function(data) {
-        GLOBAL.data = GLOBAL.data.concat(data)
+        GLOBAL_MAP.data = GLOBAL_MAP.data.concat(data)
         dataSetsLoaded += 1;
         if (dataSetsLoaded == dataToLoad) {
         	setData();
@@ -165,21 +165,21 @@ function run() {
         });
 
         d3.csv("/europe1.csv", function(data) {
-        GLOBAL.data = GLOBAL.data.concat(data)
+        GLOBAL_MAP.data = GLOBAL_MAP.data.concat(data)
         dataSetsLoaded += 1;
         if (dataSetsLoaded == dataToLoad) {
         	setData();
         }
         });
         d3.csv("/middle1.csv", function(data) {
-        GLOBAL.data = GLOBAL.data.concat(data)
+        GLOBAL_MAP.data = GLOBAL_MAP.data.concat(data)
         dataSetsLoaded += 1;
         if (dataSetsLoaded == dataToLoad) {
         	setData();
         }
         });
         d3.csv("/apac1.csv", function(data) {
-        GLOBAL.data = GLOBAL.data.concat(data)
+        GLOBAL_MAP.data = GLOBAL_MAP.data.concat(data)
         dataSetsLoaded += 1;
         if (dataSetsLoaded == dataToLoad) {
         	setData();
@@ -189,7 +189,7 @@ function run() {
     d3.select('#opts')
   		.on('change', function() {
     	var newData = d3.select(this).property('value');
-    	GLOBAL.activeCountry = newData;
+    	GLOBAL_MAP.activeCountry = newData;
     	display();   
 });
 
@@ -206,7 +206,7 @@ function run() {
 
 	function setData() {
 		filter();
-		GLOBAL.activeData.forEach(function(response) {
+		GLOBAL_MAP.activeData.forEach(function(response) {
 				countryList[response.COUNTRY]["USA"] += favorToValue[response["Q9A"]];
 				countryList[response.COUNTRY]["China"] += favorToValue[response["Q9C"]];
 				countryList[response.COUNTRY]["Iran"] += favorToValue[response["Q9D"]];
@@ -223,13 +223,13 @@ function run() {
 
 	function filter() {
 		console.dir(allowedEconomics);
-		GLOBAL.activeData = [];
-		GLOBAL.data.forEach(function(response) {
+		GLOBAL_MAP.activeData = [];
+		GLOBAL_MAP.data.forEach(function(response) {
 			if (allowedEconomics.indexOf(response["Q4"]) > -1) {
-				GLOBAL.activeData.push(response);
+				GLOBAL_MAP.activeData.push(response);
 			}
 		});
-		console.log(GLOBAL.activeData.length);
+		console.log(GLOBAL_MAP.activeData.length);
 		console.dir("WE HAVE FILTERED");
 		for (key in countryList) {
 			countryList[key]["USA"] = 0;
