@@ -28,8 +28,9 @@ var GLOBAL = { data: [],
 
 
 function setupEventListeners () { 
-    d3.selectAll("select.filter")
-	.on("change",function() { GLOBAL.update(); })   
+    d3.select(".filter")
+	.on("change",function() { 
+		GLOBAL.update(); })   
         // nice use of higher-order functions
 }
 
